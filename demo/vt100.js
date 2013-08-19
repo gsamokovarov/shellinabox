@@ -2653,6 +2653,11 @@ VT100.prototype.handleKey = function(event) {
     }
     if (ch == undefined) {
       switch (key) {
+      // Firefox > 15 changes some of the codes, see
+      // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+      case 163: /* #            */ ch = this.applyModifiers(35, event); break;
+      case 173: /* -            */ ch = this.applyModifiers(45, event); break;
+
       case   8: /* Backspace    */ ch = '\u007f';                       break;
       case   9: /* Tab          */ ch = '\u0009';                       break;
       case  10: /* Return       */ ch = '\u000A';                       break;
@@ -2823,6 +2828,11 @@ VT100.prototype.fixEvent = function(event) {
     var u                   = undefined;
     var s                   = undefined;
     switch (this.lastNormalKeyDownEvent.keyCode) {
+    // Firefox > 15 changes some of the codes, see
+    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+    case 163: /* # -> ~ */ u = 96; s =  126; break;
+    case 173: /* - -> _ */ u = 45; s =  95;  break;
+
     case  39: /* ' -> " */ u = 39; s =  34; break;
     case  44: /* , -> < */ u = 44; s =  60; break;
     case  45: /* - -> _ */ u = 45; s =  95; break;
